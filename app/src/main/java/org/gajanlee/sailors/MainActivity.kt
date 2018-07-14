@@ -1,21 +1,37 @@
 package org.gajanlee.sailors
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
-import android.view.View
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ListView
+import android.widget.Toast
 import org.gajanlee.sailors.buss.BaseActivity
 import org.gajanlee.sailors.buss.Paper
 import org.gajanlee.sailors.buss.PaperAdapter
+import com.lzy.okhttputils.OkHttpUtils
+import com.lzy.okhttputils.callback.FileCallback
+import okhttp3.Request
+import okhttp3.Response
+import java.io.File
+
+class DownloadFileCallBack(destDir: String, destName: String): FileCallback(destDir, destName) {
+
+    override fun onResponse(isFromCache: Boolean, t: File?, request: Request?, response: Response?) {
+        Log.d("d", "download done")
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+}
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -42,6 +58,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val navigationView = findViewById(R.id.nav_view) as NavigationView
         navigationView.setNavigationItemSelectedListener(this)
 
+
         paperList.add(Paper(1, "haha.pdf", "/data", "axiv"))
         paperList.add(Paper(20, "haha.pdf", "/data", "axiv"))
         paperList.add(Paper(10, "haha.pdf", "/data", "axiv"))
@@ -49,6 +66,27 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val adapter = PaperAdapter(this@MainActivity, R.layout.paper_item, paperList)
         val listView = findViewById(R.id.papers_list) as ListView
         listView.adapter = adapter
+        listView.setOnItemClickListener {
+            parent, view, position, id ->
+                val paper = paperList.get(position)
+                Toast.makeText(this@MainActivity, paper.name, Toast.LENGTH_LONG).show()
+                if(position == 1) {
+                    Log.d("path", Environment.getExternalStorageDirectory().path + "temp")
+                    Thread {
+                        OkHttpUtils.get("https://arxiv.org/pdf/1805.02220.pdf")
+                                //.headers("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.6) Gecko/20070802 SeaMonkey/1.1.4")
+                                .tag(this).execute(DownloadFileCallBack(Environment.getExternalStorageDirectory().path + "/temp", "test.pdf"))
+
+                    }.start()
+                } else {
+                    val intent = Intent(this@MainActivity, PreviewActivity::class.java)
+                    intent.putExtra("pdf_url", "https://arxiv.org/pdf/1805.02220.pdf")
+                    startActivity(intent)
+                }
+
+
+        }
+
     }
 
     override fun onBackPressed() {

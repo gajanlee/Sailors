@@ -1,6 +1,7 @@
 package org.gajanlee.sailors.buss
 
 import android.content.Context
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +17,19 @@ class PaperAdapter(context: Context, resourceId: Int, data: List<Paper>): ArrayA
     // convertView maybe null, so we should nominate it as a nullable variable
     override fun getView(pos: Int, convertView: View?, parent: ViewGroup): View {
         val paper = getItem(pos)
-        val view = LayoutInflater.from(context).inflate(resourceId, null)
-        val paperName = view.findViewById(R.id.paper_name) as TextView
-        paperName.text = paper.name
+        lateinit var view: View
+        lateinit var viewHoler: ViewHolder
+        if (convertView == null) {
+            view = LayoutInflater.from(context).inflate(resourceId, null)
+            viewHoler = ViewHolder(view.findViewById(R.id.paper_name) as TextView)
+            view.tag = viewHoler
+        } else {
+            view = convertView
+            viewHoler = view.tag as ViewHolder
+        }
+        viewHoler.paperName.text = paper.name
         return view
     }
+
+    inner class ViewHolder(val paperName: TextView)
 }
