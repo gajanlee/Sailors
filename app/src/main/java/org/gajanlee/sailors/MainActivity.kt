@@ -22,6 +22,7 @@ import com.lzy.okhttputils.OkHttpUtils
 import com.lzy.okhttputils.callback.FileCallback
 import okhttp3.Request
 import okhttp3.Response
+import org.gajanlee.sailors.buss.NavBaseActivity
 import java.io.File
 
 class DownloadFileCallBack(destDir: String, destName: String): FileCallback(destDir, destName) {
@@ -33,7 +34,7 @@ class DownloadFileCallBack(destDir: String, destName: String): FileCallback(dest
 
 }
 
-class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : NavBaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val paperList = ArrayList<Paper>()
 
@@ -117,26 +118,5 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        val id = item.itemId
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
-        drawer.closeDrawer(GravityCompat.START)
-        return true
-    }
 }

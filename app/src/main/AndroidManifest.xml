@@ -8,8 +8,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!-- 从SDCard读取数据权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <!--上网下载pdf需要-->
+    <!-- 上网下载pdf需要 -->
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
             android:name=".GApp"
             android:allowBackup="true"
@@ -29,9 +30,8 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".`PreviewActivity.kt`"
-                android:label="@string/title_activity_preview"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:name=".DownloadActivity"
+                android:label="@string/title_activity_download">
         </activity>
     </application>
 
