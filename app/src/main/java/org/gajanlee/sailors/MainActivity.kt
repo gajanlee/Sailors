@@ -25,7 +25,7 @@ import okhttp3.Response
 import org.gajanlee.sailors.buss.NavBaseActivity
 import java.io.File
 
-class DownloadFileCallBack(destDir: String, destName: String): FileCallback(destDir, destName) {
+class DownloadFileCallBacks(destDir: String, destName: String): FileCallback(destDir, destName) {
 
     override fun onResponse(isFromCache: Boolean, t: File?, request: Request?, response: Response?) {
         Log.d("d", "download done")
@@ -76,7 +76,7 @@ class MainActivity : NavBaseActivity(), NavigationView.OnNavigationItemSelectedL
                     Thread {
                         OkHttpUtils.get("https://arxiv.org/pdf/1805.02220.pdf")
                                 //.headers("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.6) Gecko/20070802 SeaMonkey/1.1.4")
-                                .tag(this).execute(DownloadFileCallBack(Environment.getExternalStorageDirectory().path + "/temp", "test.pdf"))
+                                .tag(this).execute(DownloadFileCallBacks(Environment.getExternalStorageDirectory().path + "/temp", "test.pdf"))
 
                     }.start()
                 } else {
